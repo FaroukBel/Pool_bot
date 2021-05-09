@@ -29,9 +29,9 @@ def main():
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
 
             # EMAIL FIN AYTSAFT LIK NOTIFICATION
-            email_address = "baestmage@gmail.com"
+            email_address = ""
             # PASSWORD DYALO
-            email_pass = "1597530aqWW*"
+            email_pass = ""
 
             smtp.ehlo()
             smtp.starttls()
