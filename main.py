@@ -4,8 +4,10 @@ import time
 from bs4 import BeautifulSoup as bs
 import smtplib
 
+PREVIOUS_STATE = ""
 
 def main():
+    global PREVIOUS_STATE
 
     url = "https://candidature.1337.ma/users/sign_in"
     with requests.session() as session:
@@ -24,12 +26,16 @@ def main():
         soup_check = bs(r_post.text, 'lxml')
         subs_content = soup_check.findAll('div', attrs={"id": "subs-content"})
 
+
+        PREVIOUS_STATE = str(subs_content)[1249:1388]
+
+
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
 
             # EMAIL FIN AYTSAFT LIK NOTIFICATION
-            email_address = ""
+            email_address = "baestmage@gmail.com"
             # PASSWORD DYALO
-            email_pass = ""
+            email_pass = "1597530aqWW*"
 
             smtp.ehlo()
             smtp.starttls()
@@ -43,9 +49,13 @@ def main():
             msg = f'Subject: {subject}\n\n{body}'
 
             # The equal sign in if statement just for checking if the code is working, for future use it will be =!
-            if str(subs_content)[1249:1388] == "Aucune piscine n'est actuellement disponible. Pour être au courant dès qu'une nouvelle piscine s'ouvrira, tu peux nous follow sur twitter :":
-                print('maaazal')
+            if str(subs_content)[1249:1388] == PREVIOUS_STATE:
+                print('Not yet!')
+            else:
                 smtp.sendmail(email_address, email_address, msg)
+                print("E-Mail sent!")
+        print(str(subs_content)[1249:1388])
+        print(PREVIOUS_STATE)
 
 
 if __name__ == '__main__':

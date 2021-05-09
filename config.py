@@ -1,3 +1,3 @@
 # EMAIL w PASS DYAL COMPTE 1337
-user = ''
-password = ''
+user = 'fbelkhayate@hotmail.com'
+password = '1597530aqWW*'
