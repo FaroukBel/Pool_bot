@@ -26,10 +26,6 @@ def main():
         soup_check = bs(r_post.text, 'lxml')
         subs_content = soup_check.findAll('div', attrs={"id": "subs-content"})
 
-
-        PREVIOUS_STATE = str(subs_content)[1249:1388]
-
-
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
 
             # EMAIL FIN AYTSAFT LIK NOTIFICATION
@@ -55,6 +51,7 @@ def main():
                 smtp.sendmail(email_address, email_address, msg)
                 print("E-Mail sent!")
         print(str(subs_content)[1249:1388])
+        PREVIOUS_STATE = str(subs_content)[1249:1388]
         print(PREVIOUS_STATE)
 
 
