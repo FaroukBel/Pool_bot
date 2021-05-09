@@ -3,6 +3,7 @@ import requests
 import time
 from bs4 import BeautifulSoup as bs
 import smtplib
+from server import keep_alive
 
 PREVIOUS_STATE = ""
 
@@ -56,6 +57,7 @@ def main():
 
 
 if __name__ == '__main__':
-    for _ in range(10):
+    keep_alive()
+    while True:
         main()
         time.sleep(5)
