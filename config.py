@@ -1,3 +1,7 @@
-# EMAIL w PASS DYAL COMPTE 1337
+# EMAIL_ADDRESS & PASSWORD OF 1337 ACCOUNT
 user = ''
 password = ''
+
+# EMAIL_ADDRESS & PASSWORD OF THE ACC THAT YOU WANT TO BE NOTIFIED IN
+email_address = ""
+email_pass = ""
