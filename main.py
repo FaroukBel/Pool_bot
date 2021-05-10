@@ -82,12 +82,23 @@ def main():
 
 
 def run():
-    # INFINITY LOOP
     while True:
         main()
         # PAUSING THE SCRIPT FOR A RANDOM AMOUNT OF TIME TO AVOID 1337 STAFF ;)
-        # 5min-10min
-        time.sleep(random.randint(600, 1800))
+        # 2min-10min
+
+        def timer_func():
+            timeout = random.randint(120, 600)
+            while timeout:
+                # CREATING A TIMER AND PRINTING TIME LEFT
+                mins, secs = divmod(timeout, 60)
+                timer = '{:02d}:{:02d}'.format(mins, secs)
+                print("\r", end='')
+                print(f"Script is checking again in: {timer}", end="")
+                time.sleep(1)
+                timeout -= 1
+            print('\nChecking again...')
+        timer_func()
 
 
 if __name__ == '__main__':
