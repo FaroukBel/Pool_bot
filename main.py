@@ -6,72 +6,90 @@ from bs4 import BeautifulSoup as bs
 from config import *
 import vonage
 
-headers={"User-agent":'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'}
+headers = {
+    "User-agent": 'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'}
+
 
 def telegram(msg):
-    teletoken=""
-    chat_id=""
-	telegram_url=f'https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}'
-	send=requests.get(telegram_url,headers)
-    
+    teletoken = ""
+    chat_id = ""
+    telegram_url = f'https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}'
+    send = requests.get(telegram_url, headers)
+
+
 def Sms():
-  def sms_senderyounes():
-    client = vonage.Client(key="", secret="")
-    sms = vonage.Sms(client)
+    def sms_senderyounes():
+        client = vonage.Client(key="", secret="")
+        sms = vonage.Sms(client)
 
-    responseData = sms.send_message(
-        {
-            "from": "Pool_Bot",
-            "to": "",
-            "text": "rah tla7 lpool azaml ",
-        }
-    )
+        responseData = sms.send_message(
+            {
+                "from": "Pool_Bot",
+                "to": "",
+                "text": "rah tla7 lpool azaml ",
+            }
+        )
 
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully to younes.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-  
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully to younes.")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
 
-  def sms_sendermohamed():
-    client = vonage.Client(key="", secret="")
-    sms = vonage.Sms(client)
+    def sms_sendermohamed():
+        client = vonage.Client(key="", secret="")
+        sms = vonage.Sms(client)
 
-    responseData = sms.send_message(
-        {
-            "from": "Pool_Bot",
-            "to": "",
-            "text": "rah tla7 lpool azaml    ",
-        }
-    )
+        responseData = sms.send_message(
+            {
+                "from": "Pool_Bot",
+                "to": "",
+                "text": "The pool is here! check it out.",
+            }
+        )
 
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully to mohamed .")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully to mohamed .")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
 
+    def sms_sendersaid():
+        client = vonage.Client(key="", secret="")
+        sms = vonage.Sms(client)
 
-  def sms_sendersaid():
-    client = vonage.Client(key="", secret="")
-    sms = vonage.Sms(client)
+        responseData = sms.send_message(
+            {
+                "from": "Pool_Bot",
+                "to": "",
+                "text": "The pool is here! check it out.",
+            }
+        )
 
-    responseData = sms.send_message(
-        {
-            "from": "Pool_Bot",
-            "to": "",
-            "text": "rah tla7 lpool azaml    ",
-        }
-    )
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully to mohamed .")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+    def sms_senderfarouk():
+        client = vonage.Client(key="", secret="")
+        sms = vonage.Sms(client)
 
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully to mohamed .")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+        responseData = sms.send_message(
+            {
+                "from": "Pool_Bot",
+                "to": "",
+                "text": "The pool is here! check it out.",
+            }
+        )
 
-  #sendnow 
-  sms_senderyounes()
-  sms_senderoussama()
-  sms_sendersaid()
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully to Farouk.")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+    # sendnow
+    sms_senderfarouk()
+    sms_senderyounes()
+    sms_sendermohamed()
+    sms_sendersaid()
+
 
 # GLOBAL VARS
 PREVIOUS_STATE = ""
@@ -100,10 +118,13 @@ def main():
             soup_check = bs(r_post.text, 'lxml')
             # FINDING A SPECIFIC VARIABLE IN THE UI TO NOTIFY THE USER IF CHANGED
             subs_content = soup_check.findAll('div', attrs={"id": "subs-content"})
-            nav=soup_check.find("li",class_="disabled")
-            poolmakaynx='''<li class="disabled"><a href="#">Piscine!</a></li>'''
-            li_after=soup_check.find("li",class_="active").getText()
-            d=str(nav)
+
+            nav = soup_check.find("li", class_="disabled")
+            no_pool = '''<li class="disabled"><a href="#">Piscine !</a></li>'''
+            li_after = soup_check.find("li", class_="active").getText()
+            d = str(nav)
+
+
             with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
                 # CONNECTING GMAIL ACCOUNT
                 smtp.ehlo()
@@ -121,17 +142,16 @@ def main():
                     print('Bot starting...')
                     PREVIOUS_STATE = str(subs_content)[1249:1388]
                     run()
-                elif str(subs_content)[1249:1388] != PREVIOUS_STATE or d != poolmakaynx or li_after =="Piscine!" :
+                elif str(subs_content)[1249:1388] != PREVIOUS_STATE or d != no_pool or li_after =="Piscine!":
                     # SENDING ALERT MESSAGE
-                    smtp.sendmail(email_address, email_address, msg)
-                    telegram("rah lpool tla7 maybe")
+                    smtp.sendmail(email_address, recipients, msg)
+                    telegram("Rah lpool tla7 maybe")
                     Sms()
-                    print("Message sent!")
                 else:
-                    print("no pool yet")
+                    print("No pool yet")
+
                 # ASSIGNING THE CURRENT STATE TO THE PREVIOUS STATE TO BE CHECKED ON THE NEXT LOOP
                 PREVIOUS_STATE = str(subs_content)[1249:1388]
-
     except Exception as e:
         # RAISING EXCEPTION
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
@@ -145,18 +165,20 @@ def main():
             error_body = str(e)
             error_sub = "Pool bot had an error!"
             error_msg = f'Subject: {error_sub}\n\n{error_body}'
-
             # SENDING ERROR E-MAIL
-            smtp.sendmail(email_address, email_address, error_msg)
-            telegram("dok wlad l97ab ma3tawnix token")
-            print("Error message sent!")
-            print(e)
+            if str(e) == "'NoneType' object has no attribute 'get'":
+                print(e)
+            else:
+                smtp.sendmail(email_address, recipients, error_msg)
+                telegram(f"An error occured! Error: {e}")
+                print("Error message sent!")
             run()
 
 
 def run():
     while True:
         main()
+
         # PAUSING THE SCRIPT FOR A RANDOM AMOUNT OF TIME TO AVOID 1337 STAFF ;)
         # 2min-10min
 
@@ -171,6 +193,7 @@ def run():
                 time.sleep(1)
                 timeout -= 1
             print('\nChecking again...')
+
         timer_func()
 
 
