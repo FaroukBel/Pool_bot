@@ -3,9 +3,10 @@ user = ''
 password = ''
 
 # EMAIL_ADDRESS & PASSWORD OF THE SENDER
-email_address = "pausedarkf@gmail.com"
-email_pass = "mlamtpdvcnjcikbh"
+# (make sure to enable password to third-party apps in your gmail
+# accounts it will generate a passcode that you can use here)
+email_address = ""
+email_pass = ""
 
 # EMAIL_ADDRESSES OF THE RECIPIENTS (can be multiple)
-recipients = ['example@gmail.com', 'example@protonmail.com', 'example@gmail.com', 'example@hotmail.com']
-
+recipients = ['', '', ]

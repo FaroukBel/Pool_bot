@@ -1,5 +1,4 @@
 import requests
-import time
 import smtplib
 import random
 from bs4 import BeautifulSoup as bs
@@ -9,145 +8,69 @@ from datetime import datetime
 import pytz
 import time
 
-# current time
-tz= pytz.timezone('Africa/Casablanca') 
-
-# headers
-headers={"User-agent":'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'}
-
-def telegram(msg):
-    teletoken=""
-    chat_id=""
-    telegram_url=f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
-    send=requests.get(telegram_url,headers)
-    
-def Sms():
-  def sms_sender1():
-    client = vonage.Client(key="", secret="")
-    sms = vonage.Sms(client)
-
-    responseData = sms.send_message(
-        {
-            "from": "Pool_Bot",
-            "to": "",
-            "text": "The pool is here! check it out. ",
-        }
-    )
-
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully to w2.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-  
-
-  def sms_sender2():
-    client = vonage.Client(key="", secret="")
-    sms = vonage.Sms(client)
-
-    responseData = sms.send_message(
-        {
-            "from": "Pool_Bot",
-            "to": "",
-            "text": "The pool is here! check it out. ",
-        }
-    )
-
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully to wadie.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-  
-
-  #sendnow 
-  sms_sender1()
-  sms_sender2()
-
+# CURRENT TIME
+tz = pytz.timezone('Africa/Casablanca')
+# GLOBAL VARS
+PREVIOUS_STATE = ""
+# HEADERS
 headers = {
-    "User-agent": 'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'}
+    "User-agent": 'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/89.0.4389.105 Mobile Safari/537.36 '
+}
+
+# ENTER A TELEGRAM TOKEN AND CHAT IS TO BE NOTIFIED OF THE BOT STATUS OR IF ANY PROBLEMS OCCURRED
 
 
 def telegram(msg):
     teletoken = ""
     chat_id = ""
-    telegram_url = f'https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}'
-    send = requests.get(telegram_url, headers)
+    telegram_url = f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
+    requests.get(telegram_url, headers)
+
+# TO BE NOTIFIED AND ALERTED BY THIS BOT VIA SMS SIGN UP FOR FREE IN THE WEBSITE https://www.vonage.com/ ,
+# MAKE AN SMS APPLICATION YOU WILL BE GIVEN API KEY AND A SECRET KEY TO ENTER IN THEIR FIELDS BELOW IN THE FUNCTION sms
 
 
-def Sms():
-    def sms_senderyounes():
+def sms():
+    def sms_sender1():
         client = vonage.Client(key="", secret="")
-        sms = vonage.Sms(client)
+        sms_client = vonage.Sms(client)
 
-        responseData = sms.send_message(
+        responseData = sms_client.send_message(
             {
                 "from": "Pool_Bot",
                 "to": "",
-                "text": "rah tla7 lpool azaml ",
+                "text": "The pool is here! check it out. ",
             }
         )
 
         if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to younes.")
+            print("Message sent successfully to User 1.")
         else:
             print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
 
-    def sms_sendermohamed():
+    def sms_sender2():
         client = vonage.Client(key="", secret="")
-        sms = vonage.Sms(client)
+        sms_client = vonage.Sms(client)
 
-        responseData = sms.send_message(
+        responseData = sms_client.send_message(
             {
                 "from": "Pool_Bot",
                 "to": "",
-                "text": "The pool is here! check it out.",
+                "text": "The pool is here! check it out. ",
             }
         )
 
         if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to mohamed .")
+            print("Message sent successfully to User 2.")
         else:
             print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
 
-    def sms_sendersaid():
-        client = vonage.Client(key="", secret="")
-        sms = vonage.Sms(client)
+    # YOU CAN ALWAYS ADD A NEW USER SMS FUNCTION
 
-        responseData = sms.send_message(
-            {
-                "from": "Pool_Bot",
-                "to": "",
-                "text": "The pool is here! check it out.",
-            }
-        )
-
-        if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to mohamed .")
-        else:
-            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-    def sms_senderfarouk():
-        client = vonage.Client(key="", secret="")
-        sms = vonage.Sms(client)
-
-        responseData = sms.send_message(
-            {
-                "from": "Pool_Bot",
-                "to": "",
-                "text": "The pool is here! check it out.",
-            }
-        )
-
-        if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to Farouk.")
-        else:
-            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-    # sendnow
-    sms_senderfarouk()
-    sms_senderyounes()
-    sms_sendermohamed()
-    sms_sendersaid()
-
-# GLOBAL VARS
-PREVIOUS_STATE = ""
+    # SEND NOW
+    sms_sender1()
+    sms_sender2()
 
 
 def main():
@@ -168,18 +91,12 @@ def main():
                 'user[password]': password
             }
 
-              
-
             # LOGGING IN AND GETTING MAIN HTML AS LXML FORMAT
             r_post = session.post(url, data=data)
             soup_check = bs(r_post.text, 'lxml')
+
             # FINDING A SPECIFIC VARIABLE IN THE UI TO NOTIFY THE USER IF CHANGED
             subs_content = soup_check.findAll('div', attrs={"id": "subs-content"})
-
-            nav=soup_check.find("li",class_="disabled")
-            poolmakaynx = '''<li class="disabled"><a href="#">Piscine!</a></li>'''
-            li_after=soup_check.find("li",class_="active").getText()
-            d=str(nav)
 
             nav = soup_check.find("li", class_="disabled")
             no_pool = '''<li class="disabled"><a href="#">Piscine !</a></li>'''
@@ -201,13 +118,14 @@ def main():
                 # COMPARING PREVIOUS AND CURRENT STATE
                 if PREVIOUS_STATE == '':
                     print('Bot starting...')
+                    telegram('Bot is starting...')
                     PREVIOUS_STATE = str(subs_content)[1249:1388]
                     run()
-                elif str(subs_content)[1249:1388] != PREVIOUS_STATE or d != no_pool or li_after =="Piscine!":
+                elif str(subs_content)[1249:1388] != PREVIOUS_STATE or d != no_pool or li_after == "Piscine!":
                     # SENDING ALERT MESSAGE
                     smtp.sendmail(email_address, recipients, msg)
                     telegram("Rah lpool tla7 maybe")
-                    Sms()
+                    sms()
                 else:
                     print("No pool yet")
                 # ASSIGNING THE CURRENT STATE TO THE PREVIOUS STATE TO BE CHECKED ON THE NEXT LOOP
@@ -225,6 +143,7 @@ def main():
             error_body = str(e)
             error_sub = "Pool bot had an error!"
             error_msg = f'Subject: {error_sub}\n\n{error_body}'
+
             # SENDING ERROR E-MAIL
             if str(e) == "'NoneType' object has no attribute 'get'":
                 print(e)
@@ -238,12 +157,11 @@ def main():
 def run():
     while True:
         main()
-
         # PAUSING THE SCRIPT FOR A RANDOM AMOUNT OF TIME TO AVOID 1337 STAFF ;)
-        # 5s-20s
+        # 3s-10s
 
         def timer_func():
-            timeout = random.randint(1,5)
+            timeout = random.randint(3, 10)
             while timeout:
                 # CREATING A TIMER AND PRINTING TIME LEFT
                 mins, secs = divmod(timeout, 60)
@@ -255,19 +173,55 @@ def run():
             print('\nChecking again...')
 
         timer_func()
-        
-        # status notifier
-        h=datetime.now(tz).hour
-        m=datetime.now(tz).minute
-        s=datetime.now(tz).second
-        if (h==18 and m==30 and s>=0) and (h==18 and m==30 and s<=15):
-            print("get bot status ....")
-            telegram("bot status : working...")
-            time.sleep(10)
-        elif (h==12 and m==1 and s>=0) and (h==12 and m==1 and s<=15):
-            print("get bot status ....")
-            telegram("bot status : working...")
-            time.sleep(10)
+
+        # STATUS NOTIFIER
+        h = datetime.now(tz).hour
+        m = datetime.now(tz).minute
+        s = datetime.now(tz).second
+
+        phrases = ["Bot talking: Don't worry I'm working...", "Bot talking: Aghh! I'm working shut up...",
+                   "Bot talking: I'm working! do you ?", "Bot talking: Do something else, I'm working!",
+                   "Bot talking: Are you gonna watch me all day? Leave me alone, I'm working!",
+                   "Bot talking: I'm doing my job!", "Bot talking: Working on it! so you don't have to dumbass"]
+        random_fromlist = random.choice(phrases)
+
+        def status():
+            print("Getting bot status...")
+            telegram(random_fromlist)
+            print("Bot status sent.")
+
+        if (h == 23 and m == 6 and s >= 0) and (h == 23 and m == 6 and s <= 10):
+            status()
+        elif (h == 7 and m == 1 and s >= 0) and (h == 7 and m == 1 and s <= 10):
+            status()
+        elif (h == 8 and m == 1 and s >= 0) and (h == 8 and m == 1 and s <= 10):
+            status()
+        elif (h == 9 and m == 1 and s >= 0) and (h == 9 and m == 1 and s <= 10):
+            status()
+        elif (h == 10 and m == 1 and s >= 0) and (h == 10 and m == 1 and s <= 10):
+            status()
+        elif (h == 11 and m == 1 and s >= 0) and (h == 11 and m == 1 and s <= 10):
+            status()
+        elif (h == 12 and m == 1 and s >= 0) and (h == 12 and m == 1 and s <= 10):
+            status()
+        elif (h == 13 and m == 1 and s >= 0) and (h == 13 and m == 1 and s <= 10):
+            status()
+        elif (h == 14 and m == 1 and s >= 0) and (h == 14 and m == 1 and s <= 10):
+            status()
+        elif (h == 15 and m == 1 and s >= 0) and (h == 15 and m == 1 and s <= 10):
+            status()
+        elif (h == 16 and m == 1 and s >= 0) and (h == 16 and m == 1 and s <= 10):
+            status()
+        elif (h == 17 and m == 1 and s >= 0) and (h == 17 and m == 1 and s <= 10):
+            status()
+        elif (h == 18 and m == 1 and s >= 0) and (h == 18 and m == 1 and s <= 10):
+            status()
+        elif (h == 19 and m == 1 and s >= 0) and (h == 19 and m == 1 and s <= 10):
+            status()
+        elif (h == 20 and m == 1 and s >= 0) and (h == 20 and m == 1 and s <= 10):
+            status()
+        elif (h == 21 and m == 1 and s >= 0) and (h == 21 and m == 1 and s <= 10):
+            status()
 
 
 if __name__ == '__main__':
