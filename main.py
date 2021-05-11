@@ -5,6 +5,62 @@ import random
 from bs4 import BeautifulSoup as bs
 from config import *
 import vonage
+from datetime import datetime
+import pytz
+import time
+
+# current time
+tz= pytz.timezone('Africa/Casablanca') 
+
+# headers
+headers={"User-agent":'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'}
+
+def telegram(msg):
+    teletoken=""
+    chat_id=""
+    telegram_url=f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
+    send=requests.get(telegram_url,headers)
+    
+def Sms():
+  def sms_sender1():
+    client = vonage.Client(key="", secret="")
+    sms = vonage.Sms(client)
+
+    responseData = sms.send_message(
+        {
+            "from": "Pool_Bot",
+            "to": "",
+            "text": "The pool is here! check it out. ",
+        }
+    )
+
+    if responseData["messages"][0]["status"] == "0":
+        print("Message sent successfully to w2.")
+    else:
+        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+  
+
+  def sms_sender2():
+    client = vonage.Client(key="", secret="")
+    sms = vonage.Sms(client)
+
+    responseData = sms.send_message(
+        {
+            "from": "Pool_Bot",
+            "to": "",
+            "text": "The pool is here! check it out. ",
+        }
+    )
+
+    if responseData["messages"][0]["status"] == "0":
+        print("Message sent successfully to wadie.")
+    else:
+        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+  
+
+  #sendnow 
+  sms_sender1()
+  sms_sender2()
 
 headers = {
     "User-agent": 'Mozilla/5.0 (Linux; Android 8.1.0; SM-J530F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'}
@@ -90,7 +146,6 @@ def Sms():
     sms_sendermohamed()
     sms_sendersaid()
 
-
 # GLOBAL VARS
 PREVIOUS_STATE = ""
 
@@ -113,17 +168,23 @@ def main():
                 'user[password]': password
             }
 
+              
+
             # LOGGING IN AND GETTING MAIN HTML AS LXML FORMAT
             r_post = session.post(url, data=data)
             soup_check = bs(r_post.text, 'lxml')
             # FINDING A SPECIFIC VARIABLE IN THE UI TO NOTIFY THE USER IF CHANGED
             subs_content = soup_check.findAll('div', attrs={"id": "subs-content"})
 
+            nav=soup_check.find("li",class_="disabled")
+            poolmakaynx = '''<li class="disabled"><a href="#">Piscine!</a></li>'''
+            li_after=soup_check.find("li",class_="active").getText()
+            d=str(nav)
+
             nav = soup_check.find("li", class_="disabled")
             no_pool = '''<li class="disabled"><a href="#">Piscine !</a></li>'''
             li_after = soup_check.find("li", class_="active").getText()
             d = str(nav)
-
 
             with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
                 # CONNECTING GMAIL ACCOUNT
@@ -149,7 +210,6 @@ def main():
                     Sms()
                 else:
                     print("No pool yet")
-
                 # ASSIGNING THE CURRENT STATE TO THE PREVIOUS STATE TO BE CHECKED ON THE NEXT LOOP
                 PREVIOUS_STATE = str(subs_content)[1249:1388]
     except Exception as e:
@@ -180,10 +240,10 @@ def run():
         main()
 
         # PAUSING THE SCRIPT FOR A RANDOM AMOUNT OF TIME TO AVOID 1337 STAFF ;)
-        # 2min-10min
+        # 5s-20s
 
         def timer_func():
-            timeout = random.randint(5, 20)
+            timeout = random.randint(1,5)
             while timeout:
                 # CREATING A TIMER AND PRINTING TIME LEFT
                 mins, secs = divmod(timeout, 60)
@@ -195,6 +255,19 @@ def run():
             print('\nChecking again...')
 
         timer_func()
+        
+        # status notifier
+        h=datetime.now(tz).hour
+        m=datetime.now(tz).minute
+        s=datetime.now(tz).second
+        if (h==18 and m==30 and s>=0) and (h==18 and m==30 and s<=15):
+            print("get bot status ....")
+            telegram("bot status : working...")
+            time.sleep(10)
+        elif (h==12 and m==1 and s>=0) and (h==12 and m==1 and s<=15):
+            print("get bot status ....")
+            telegram("bot status : working...")
+            time.sleep(10)
 
 
 if __name__ == '__main__':
