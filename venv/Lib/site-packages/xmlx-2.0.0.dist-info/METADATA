@@ -1,0 +1,39 @@
+Metadata-Version: 2.0
+Name: xmlx
+Version: 2.0.0
+Summary: A simple and compact XML parser.
+Home-page: https://github.com/Kenny2github/xmlx
+Author: Ken Hilton
+Author-email: kenny2minecraft@gmail.com
+License: GNU GPLv3
+Description-Content-Type: UNKNOWN
+Keywords: xml dict parser
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Topic :: Software Development :: Compilers
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+
+XMLX - a simple and compact XML parser.
+
+XMLX = XML eXtras
+
+To initialize an element object from a string:
+
+``>>> xmlx.Element('<html>hello!</html>')``
+
+``<html>..</html at 0x...>``
+
+If you prefer dictionaries, simply use ``xmlx.elemdict(text)``:
+
+``>>> xmlx.elemdict('<html>hello!</html>')``
+
+``{'?':{},'@':'hello!','*':'<html>hello!</html>'}``
+
+``?`` is the element's attributes, ``@`` is its content (JS innerHTML), and ``*`` is its text (JS outerHTML).
+
+See help(xmlx) for further documentation.
+
+
