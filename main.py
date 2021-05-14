@@ -1,4 +1,4 @@
-from PyQt5.Qt import QMainWindow, QApplication
+from PyQt5.Qt import QMainWindow, QApplication, QPushButton, QLineEdit
 from PyQt5.QtCore import *
 from PyQt5 import QtCore
 import requests
@@ -39,6 +39,7 @@ class Pool(QMainWindow, Ui_PoolUi):
 
         self.sms.clicked.connect(self.sms_clicked)
         self.return_2.clicked.connect(self.return_main)
+        self.add.clicked.connect(self.add_recipient)
 
         flags = QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setWindowFlags(flags)
@@ -52,11 +53,29 @@ class Pool(QMainWindow, Ui_PoolUi):
 
         self.title_bar.mouseMoveEvent = moveWindow
 
-    def return_main(self):
-        self.stackedWidget.setCurrentIndex(0)
-
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
+
+    def add_recipient(self):
+        rec_list = []
+        x = 1
+        for i in range(x):
+            rec_list.append(QLineEdit())
+            rec_list[i].setStyleSheet("color: rgb(255, 255, 255);border:none;border-radius:15px;"
+                                                      "background-color: rgb(154, 154, 154);")
+            rec_list[i].setMinimumHeight(40)
+            rec_list[i].setAlignment(QtCore.Qt.AlignCenter)
+            font = rec_list[i].font()
+            font.setBold(True)
+            font.setPointSize(12)
+            font.setFamily("OCR A Extended")
+            rec_list[i].setFont(font)
+            rec_list[i].setPlaceholderText("E-mail")
+            self.verticalLay.addWidget(rec_list[i])
+        x += 1
+
+    def return_main(self):
+        self.stackedWidget.setCurrentIndex(0)
 
     def sms_clicked(self):
         self.stackedWidget.setCurrentIndex(1)

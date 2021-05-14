@@ -168,9 +168,9 @@ QPushButton#begin::hover{
     <widget class="QLineEdit" name="Username">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>20</x>
        <y>110</y>
-       <width>281</width>
+       <width>321</width>
        <height>41</height>
       </rect>
      </property>
@@ -205,9 +205,9 @@ QPushButton#begin::hover{
     <widget class="QLineEdit" name="Username_2">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>20</x>
        <y>170</y>
-       <width>281</width>
+       <width>321</width>
        <height>41</height>
       </rect>
      </property>
@@ -403,10 +403,10 @@ QPushButton#telegram::hover{
     <widget class="QScrollArea" name="scrollArea">
      <property name="geometry">
       <rect>
-       <x>449</x>
-       <y>96</y>
-       <width>321</width>
-       <height>221</height>
+       <x>440</x>
+       <y>100</y>
+       <width>351</width>
+       <height>231</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -420,53 +420,59 @@ QPushButton#telegram::hover{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>319</width>
-        <height>219</height>
+        <width>349</width>
+        <height>229</height>
        </rect>
       </property>
-      <widget class="QLineEdit" name="Username_3">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>281</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>OCR A Extended</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>E-mail address</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLay">
+         <item>
+          <widget class="QLineEdit" name="Username_3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>OCR A Extended</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>E-mail address</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255);
 	border:none;
 	border-radius:15px;
 	background-color: rgb(154, 154, 154);
 </string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="placeholderText">
-        <string>E-mail</string>
-       </property>
-      </widget>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="placeholderText">
+            <string>E-mail</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>520</x>
        <y>40</y>
        <width>171</width>
        <height>51</height>
@@ -491,8 +497,8 @@ QPushButton#telegram::hover{
     <widget class="QPushButton" name="add">
      <property name="geometry">
       <rect>
-       <x>580</x>
-       <y>330</y>
+       <x>590</x>
+       <y>350</y>
        <width>51</width>
        <height>51</height>
       </rect>
