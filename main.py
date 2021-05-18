@@ -46,59 +46,53 @@ def send_image(chat_id,image,teletoken):
 
 
 def telegram(msg,image):
-    teletoken="1791780483:AAH7nR7u0ZWZWqptMTYaOpGZl1jLNYWht-U"
-    chat_id="-1001396783230"
-    telegram_url=f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
-    send=requests.get(telegram_url)
-    send_image(chat_id,image,teletoken)
-
-
+    telegram_info = [["", ""],
+                     ["", ""]]
+    for teletoken, chat_id in telegram_info:
+        telegram_url = f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
+        send=requests.get(telegram_url)
+        send_image(chat_id,image,teletoken)
+   
 # TO BE NOTIFIED AND ALERTED BY THIS BOT VIA SMS SIGN UP FOR FREE IN THE WEBSITE https://www.vonage.com/ ,
 # MAKE AN SMS APPLICATION YOU WILL BE GIVEN API KEY AND A SECRET KEY TO ENTER IN THEIR FIELDS BELOW IN THE FUNCTION sms
 
 
-def sms():
-    def sms_sender1():
-        client = vonage.Client(key="", secret="")
-        sms_client = vonage.Sms(client)
+def sms(name, message, number, api_key, secret_key):
+    client = vonage.Client(key=api_key, secret=secret_key)
+    sms_client = vonage.Sms(client)
 
-        responseData = sms_client.send_message(
-            {
-                "from": "Pool_Bot",
-                "to": "",
-                "text": "The pool is here! check it out. ",
-            }
-        )
+    responseData = sms_client.send_message(
+        {
+            "from": "Pool Bot",
+            "to": number,
+            "text": message,
+        }
+    )
 
-        if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to User 1.")
-        else:
-            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+    if responseData["messages"][0]["status"] == "0":
+        print(f"Message sent successfully to {name}.")
+    else:
+        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
 
-    def sms_sender2():
-        client = vonage.Client(key="", secret="")
-        sms_client = vonage.Sms(client)
+    # ADD YOUR INFORMATIONS HERE
+    users_sms = [("NAME", "The POOL IS HERE CHECK IT OUT", "NUMBER", "API_KEY", "SECRET_KEY"), ()]
+    for users_sms in users_sms:
+        sms(*users_sms)
 
-        responseData = sms_client.send_message(
-            {
-                "from": "Pool_Bot",
-                "to": "",
-                "text": "The pool is here! check it out. ",
-            }
-        )
+        
+def alert_message(email_msg_subject, email_msg_body):
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        # CONNECTING GMAIL ACCOUNT
+        smtp.ehlo()
+        smtp.starttls()
+        smtp.ehlo()
+        smtp.login(email_address, email_pass)
 
-        if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to User 2.")
-        else:
-            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-
-    # YOU CAN ALWAYS ADD A NEW USER SMS FUNCTION
-
-    # SEND NOW
-    sms_sender1()
-    sms_sender2()
-
-
+        # E-MAIL COMPOSITION
+        msg = f'Subject: {email_msg_subject}\n\n{email_msg_body}'
+        # SENDING ALERT MESSAGE
+        smtp.sendmail(email_address, recipients, msg)
+      
 def main():
     try:
         global PREVIOUS_STATE
@@ -123,63 +117,54 @@ def main():
 
             # FINDING A SPECIFIC VARIABLE IN THE UI TO NOTIFY THE USER IF CHANGED
             subs_content = soup_check.findAll('div', attrs={"id": "subs-content"})
-
-            nav = soup_check.find("li", class_="disabled")
-            no_pool = '''<li class="disabled"><a href="#">Piscine !</a></li>'''
-            li_after = soup_check.find("li", class_="active").getText()
-            d = str(nav)
-
-            with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-                # CONNECTING GMAIL ACCOUNT
-                smtp.ehlo()
-                smtp.starttls()
-                smtp.ehlo()
-                smtp.login(email_address, email_pass)
-
-                # E-MAIL COMPOSITION
-                subject = "WA RAH L POOL (maybe) TLA7!!"
-                body = "THE POOL IS LOADING !!!"
-                msg = f'Subject: {subject}\n\n{body}'
-
-                # COMPARING PREVIOUS AND CURRENT STATE
-                if PREVIOUS_STATE == '':
-                    print('Bot starting...')
-                    telegram('Bot is starting...')
-                    PREVIOUS_STATE = str(subs_content)[1249:1388]
-                    run()
-                elif str(subs_content)[1249:1388] != PREVIOUS_STATE or d != no_pool or li_after == "Piscine!":
-                    # SENDING ALERT MESSAGE
-                    screenshot()
-                    smtp.sendmail(email_address, recipients, msg)
-                    telegram("Rah lpool tla7 maybe","Capture.png")
-                    sms()
-                else:
-                    print("No pool yet")
-                # ASSIGNING THE CURRENT STATE TO THE PREVIOUS STATE TO BE CHECKED ON THE NEXT LOOP
-                PREVIOUS_STATE = str(subs_content)[1249:1388]
+            str_content = str(subs_content)
+            content_list = [str_content[1249:1388]]
+            
+            if PREVIOUS_STATE == '':
+                print('Bot starting...')
+                telegram('Bot is starting...', "Capture.png")
+                PREVIOUS_STATE = str_content
+                run()
+            elif not content_list:
+                screenshot()
+                email_msg_subject = "THE POOL IS HERE! CHECK IT OUT!"
+                email_msg_body = f"THE POOL IS LOADING ! PLACES ARE VERY LIMITED!" \
+                                 f"Click here {url}"
+                tele_msg = f"THE POOL IS HERE! CHECK IT OUT! Click here {url}"
+                telegram(tele_msg, "Capture.png")
+                alert_message(email_msg_subject, email_msg_body)
+                print("THE POOL IS HERE!!! CHECK IT OUT !!!")
+            elif not subs_content or PREVIOUS_STATE != str_content:
+                screenshot()
+                email_msg_subject = "THE WEBSITE HAS CHANGED! CHECK IT OUT!"
+                email_msg_body = "THE BOT DETECTED A CHANGE IN THE WEBSITE, See for your self!" \
+                                 f"{url}"
+                tele_msg = f"THE WEBSITE HAS CHANGED! CHECK IT OUT! Click here! {url}"
+                telegram(tele_msg, "Capture.png")
+                alert_message(email_msg_subject, email_msg_body)
+                print("THE WEBSITE HAS CHANGED! CHECK IT OUT!")
+            else:
+                print("No pool yet")
+            # ASSIGNING THE CURRENT STATE TO THE PREVIOUS STATE TO BE CHECKED ON THE NEXT LOOP
+            PREVIOUS_STATE = str(subs_content)[1249:1388]
+                
     except Exception as e:
         # RAISING EXCEPTION
-        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-            # LOGGING IN WITH THE SAME ACCOUNT
-            smtp.ehlo()
-            smtp.starttls()
-            smtp.ehlo()
-            smtp.login(email_address, email_pass)
+        
+        # CREATING ERROR MESSAGE
+        error_body = str(e)
+        error_sub = "Pool bot had an error!"
+        error_msg = f'Subject: {error_sub}\n\n{error_body}'
 
-            # CREATING ERROR MESSAGE
-            error_body = str(e)
-            error_sub = "Pool bot had an error!"
-            error_msg = f'Subject: {error_sub}\n\n{error_body}'
-
-            # SENDING ERROR E-MAIL
-            if str(e) == "'NoneType' object has no attribute 'get'":
-                print(e)
-            else:
-                smtp.sendmail(email_address, recipients, error_msg)
-                screenshot()
-                telegram(f"An error occured! Error: {e}","Capture.png")
-                print("Error message sent!")
-            run()
+        # SENDING ERROR E-MAIL
+        if str(e) == "'NoneType' object has no attribute 'get'":
+            print(e)
+        else:
+            alert_message(error_sub, error_body)
+            screenshot()
+            telegram(f"An error occured! Error: {e}","Capture.png")
+            print("Error message sent!")
+        run()
 
 
 def run():
