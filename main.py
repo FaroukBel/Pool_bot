@@ -1,3 +1,4 @@
+from selenium import webdriver
 import requests
 import smtplib
 import random
@@ -7,6 +8,7 @@ import vonage
 from datetime import datetime
 import pytz
 import time
+import telepot
 
 # CURRENT TIME
 tz = pytz.timezone('Africa/Casablanca')
@@ -18,14 +20,38 @@ headers = {
                   'Chrome/89.0.4389.105 Mobile Safari/537.36 '
 }
 
+def screenshot():
+    browser= webdriver.Chrome("C:\\Users\\myrdp\\Desktop\\pool_jdid\\webdriver\\chromedriver.exe")
+    browser.get("https://candidature.1337.ma/users/sign_in")
+    user = ''
+    password = ''
+    email_box=browser.find_element_by_id("user_email")
+    email_box.send_keys(user)
+    pass_box=browser.find_element_by_id("user_password")
+    pass_box.send_keys(password)
+    login_button=browser.find_element_by_name("commit")
+    login_button.submit()
+    browser.save_screenshot("Capture.png")
+    
 # ENTER A TELEGRAM TOKEN AND CHAT IS TO BE NOTIFIED OF THE BOT STATUS OR IF ANY PROBLEMS OCCURRED
 
 
-def telegram(msg):
-    teletoken = ""
-    chat_id = ""
-    telegram_url = f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
-    requests.get(telegram_url, headers)
+def send_image(chat_id,image,teletoken):
+
+    bot = telepot.Bot(teletoken)
+
+    # here replace chat_id and test.jpg with real things
+    bot.sendPhoto(chat_id, photo=open(image, 'rb'))
+
+
+
+def telegram(msg,image):
+    teletoken="1791780483:AAH7nR7u0ZWZWqptMTYaOpGZl1jLNYWht-U"
+    chat_id="-1001396783230"
+    telegram_url=f"https://api.telegram.org/bot{teletoken}/sendMessage?chat_id={chat_id}&text={msg}"
+    send=requests.get(telegram_url)
+    send_image(chat_id,image,teletoken)
+
 
 # TO BE NOTIFIED AND ALERTED BY THIS BOT VIA SMS SIGN UP FOR FREE IN THE WEBSITE https://www.vonage.com/ ,
 # MAKE AN SMS APPLICATION YOU WILL BE GIVEN API KEY AND A SECRET KEY TO ENTER IN THEIR FIELDS BELOW IN THE FUNCTION sms
@@ -123,8 +149,9 @@ def main():
                     run()
                 elif str(subs_content)[1249:1388] != PREVIOUS_STATE or d != no_pool or li_after == "Piscine!":
                     # SENDING ALERT MESSAGE
+                    screenshot()
                     smtp.sendmail(email_address, recipients, msg)
-                    telegram("Rah lpool tla7 maybe")
+                    telegram("Rah lpool tla7 maybe","Capture.png")
                     sms()
                 else:
                     print("No pool yet")
@@ -149,7 +176,8 @@ def main():
                 print(e)
             else:
                 smtp.sendmail(email_address, recipients, error_msg)
-                telegram(f"An error occured! Error: {e}")
+                screenshot()
+                telegram(f"An error occured! Error: {e}","Capture.png")
                 print("Error message sent!")
             run()
 
@@ -187,7 +215,8 @@ def run():
 
         def status():
             print("Getting bot status...")
-            telegram(random_fromlist)
+            screenshot()
+            telegram(random_fromlist,"Capture.png")
             print("Bot status sent.")
 
         if (h == 23 and m == 6 and s >= 0) and (h == 23 and m == 6 and s <= 10):
